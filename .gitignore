@@ -1,0 +1,7 @@
+venv/
+vagas_enfermagem.db
+videos_gerados/
+.~lock.*
+.DS_Store
+__pycache__/
+*.pyc
