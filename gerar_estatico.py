@@ -284,9 +284,7 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
         <!-- Logotipo Centralizado -->
         <div class="logo-container">
             <div class="profile-logo">
-                <!-- Se tiver um arquivo de imagem (ex: logo.png) na mesma pasta, substitua o texto abaixo por:
-                     <img src="logo.png" alt="Logotipo"> -->
-                <span class="placeholder-text">Sua Logo Aqui</span>
+                <img src="logo-vagas-enfermagem.jpeg" alt="Logo Vagas Enfermagem">
             </div>
         </div>
 
@@ -306,7 +304,7 @@ HTML_TEMPLATE = '''<!DOCTYPE html>
         </main>
 
         <footer>
-            <!-- Botão de Redirecionamento do TikTok (Troque pelo link do seu perfil depois!) -->
+            <!-- Botão de Redirecionamento do TikTok -->
             <a href="https://www.tiktok.com/@SEU_PERFIL_AQUI" target="_blank" rel="noopener" class="btn-tiktok">
                 🎵 Siga no TikTok para vagas diárias
             </a>
@@ -419,16 +417,16 @@ def generate_html_from_db():
         conn.commit()
 
     cursor.execute('''
-        SELECT cargo, instituicao, cidade, estado, prazo, link_inscricao, link_edital, urgente, email 
+        SELECT cargo, instituicao, cidade, estado, prazo, link_inscricao, link_edital, urgente, email
         FROM vagas
         ORDER BY data_cadastro DESC
     ''')
-    
+
     rows = cursor.fetchall()
     conn.close()
 
     vagas_html = []
-    
+
     for row in rows:
         cargo, instituicao, cidade, estado, prazo, link_insc, link_edital, urgente, email = row
         prazo_formatado = format_date_br(prazo)
@@ -442,7 +440,7 @@ def generate_html_from_db():
             botoes.append(f'<a href="{link_edital}" target="_blank" rel="noopener" class="btn btn-secondary">Ver Edital</a>')
         if email:
             botoes.append(f'<a href="mailto:{email}?subject=Candidatura para vaga de {cargo}" rel="noopener" class="btn btn-secondary">Enviar E-mail</a>')
-        
+
         if not botoes:
             botoes.append('<span class="btn btn-secondary" style="cursor: default;">Contato no Vídeo</span>')
 
@@ -462,7 +460,7 @@ def generate_html_from_db():
     # Se ainda não houver vagas cadastradas no banco, mostra um aviso amigável na página
     vagas_html_str = "\n".join(vagas_html) if vagas_html else '<p style="text-align:center; color: var(--text-muted); padding: 40px;">Nenhuma vaga cadastrada no momento. Volte em breve!</p>'
     now_str = datetime.now().strftime("%d/%m/%Y às %H:%M")
-    
+
     final_html = HTML_TEMPLATE.replace("{DATA_ATUALIZACAO}", now_str)
     final_html = final_html.replace("{LISTA_DE_VAGAS}", vagas_html_str)
     final_html = final_html.replace("{ANO_ATUAL}", str(datetime.now().year))
