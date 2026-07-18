@@ -14,6 +14,8 @@
             --primary-hover: #0096c7;
             --accent-urgent: #e63946;
             --border-color: #e2e8f0;
+            --accent-course: #2d6a4f;
+            --accent-course-hover: #40916c;
         }
 
         body {
@@ -94,6 +96,69 @@
             font-size: 0.75rem;
             font-weight: 600;
             margin-top: 10px;
+        }
+
+        /* Seção de Cursos */
+        .section-title {
+            font-size: 1.3rem;
+            color: var(--text-main);
+            font-weight: 700;
+            margin: 30px 0 16px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .section-title.cursos-title {
+            color: var(--accent-course);
+        }
+
+        .cursos-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .curso-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 18px 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--accent-course);
+            transition: transform 0.2s ease;
+        }
+
+        .curso-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .curso-card a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-size: 1.05rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .curso-card a:hover {
+            color: var(--accent-course-hover);
+        }
+
+        .curso-card .curso-icon {
+            color: var(--accent-course);
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .curso-card .curso-link-label {
+            font-size: 0.8rem;
+            color: var(--accent-course-hover);
+            margin-left: auto;
+            font-weight: 600;
+            white-space: nowrap;
         }
 
         /* Campo de Busca */
@@ -283,8 +348,16 @@
         <header>
             <h1>Oportunidades de Enfermagem 🩺</h1>
             <p>Vagas e qualificações oficiais atualizadas para o Brasil inteiro.</p>
-            <div class="update-badge">Atualizado em: 15/07/2026 às 20:53</div>
+            <div class="update-badge">Atualizado em: 18/07/2026 às 19:40</div>
         </header>
+
+        <!-- Seção de Cursos -->
+        <section>
+            <h2 class="section-title cursos-title">📚 Cursos Recomendados</h2>
+            <div class="cursos-list" id="cursosList">
+                <!-- Cursos carregados dinamicamente via cursos.json -->
+            </div>
+        </section>
 
         <!-- Campo de Busca -->
         <div class="search-container">
@@ -293,6 +366,20 @@
 
         <main class="vagas-list" id="vagasList">
             
+            <div class="card" data-cargo="Enfermeiro / Técnico de Enfermagem" data-instituicao="Hospital Metropolitano Odilon Behrens" data-cidade="Belo Horizonte" data-estado="MINAS GERAIS">
+                
+                <h2>Enfermeiro / Técnico de Enfermagem</h2>
+                <div class="institution">Hospital Metropolitano Odilon Behrens</div>
+                <div class="meta-info">
+                    <span class="location-badge">📍 Belo Horizonte - MINAS GERAIS</span>
+                    <span class="deadline">📅 <strong>Prazo:</strong> A definir</span>
+                </div>
+                <div class="actions">
+                    <a href="https://novo.ibgpconcursos.com.br/concurso.jsp?cod=708" target="_blank" rel="noopener" class="btn btn-primary">Inscrever-se</a>
+                </div>
+            </div>
+
+
             <div class="card" data-cargo="Técnico de Enfermagem" data-instituicao="Hospital São Camilo" data-cidade="Limoeiro do Norte" data-estado="CEARÁ">
                 
                 <h2>Técnico de Enfermagem</h2>
@@ -397,6 +484,34 @@
                 }
             });
         });
+    </script>
+
+    <!-- Script para carregar cursos do JSON -->
+    <script>
+        fetch('cursos.json')
+            .then(response => response.json())
+            .then(cursos => {
+                const container = document.getElementById('cursosList');
+                if (cursos.length === 0) {
+                    container.innerHTML = '<p style="text-align:center; color: var(--text-muted); padding: 10px;">Nenhum curso disponível no momento.</p>';
+                    return;
+                }
+                cursos.forEach(curso => {
+                    const card = document.createElement('div');
+                    card.className = 'curso-card';
+                    card.innerHTML = \`
+                        <a href="\${curso.link}" target="_blank" rel="noopener">
+                            <span class="curso-icon">📖</span>
+                            <span>\${curso.titulo}</span>
+                            <span class="curso-link-label">Acessar →</span>
+                        </a>
+                    \`;
+                    container.appendChild(card);
+                });
+            })
+            .catch(err => {
+                console.error('Erro ao carregar cursos:', err);
+            });
     </script>
 </body>
 </html>
