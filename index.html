@@ -348,16 +348,19 @@
         <header>
             <h1>Oportunidades de Enfermagem 🩺</h1>
             <p>Vagas e qualificações oficiais atualizadas para o Brasil inteiro.</p>
-            <div class="update-badge">Atualizado em: 18/07/2026 às 19:40</div>
+            <div class="update-badge">Atualizado em: 18/07/2026 às 19:56</div>
         </header>
 
         <!-- Seção de Cursos -->
         <section>
             <h2 class="section-title cursos-title">📚 Cursos Recomendados</h2>
             <div class="cursos-list" id="cursosList">
-                <!-- Cursos carregados dinamicamente via cursos.json -->
+                <!-- Cursos carregados dinamicamente via JavaScript -->
             </div>
         </section>
+
+        <!-- Seção de Oportunidades -->
+        <h2 class="section-title">💼 Oportunidades Profissionais</h2>
 
         <!-- Campo de Busca -->
         <div class="search-container">
@@ -486,32 +489,28 @@
         });
     </script>
 
-    <!-- Script para carregar cursos do JSON -->
+    <!-- Script para renderizar cursos embutidos -->
     <script>
-        fetch('cursos.json')
-            .then(response => response.json())
-            .then(cursos => {
-                const container = document.getElementById('cursosList');
-                if (cursos.length === 0) {
-                    container.innerHTML = '<p style="text-align:center; color: var(--text-muted); padding: 10px;">Nenhum curso disponível no momento.</p>';
-                    return;
-                }
-                cursos.forEach(curso => {
-                    const card = document.createElement('div');
-                    card.className = 'curso-card';
-                    card.innerHTML = \`
-                        <a href="\${curso.link}" target="_blank" rel="noopener">
-                            <span class="curso-icon">📖</span>
-                            <span>\${curso.titulo}</span>
-                            <span class="curso-link-label">Acessar →</span>
-                        </a>
-                    \`;
-                    container.appendChild(card);
-                });
-            })
-            .catch(err => {
-                console.error('Erro ao carregar cursos:', err);
+        const cursos = [
+            {"titulo": "Curso Processo de Enfermagem Avançado: Integrando Regulação, Taxonomias e Tecnologia para Cuidado de Excelência", "link": "https://go.hotmart.com/A103831358N?dp=1"}
+        ];
+
+        (function() {
+            const container = document.getElementById('cursosList');
+            if (!cursos || cursos.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color: var(--text-muted); padding: 10px;">Nenhum curso disponível no momento.</p>';
+                return;
+            }
+            cursos.forEach(curso => {
+                const card = document.createElement('div');
+                card.className = 'curso-card';
+                card.innerHTML = '<a href="' + curso.link + '" target="_blank" rel="noopener">' +
+                    '<span class="curso-icon">\uD83D\uDCD6</span>' +
+                    '<span>' + curso.titulo + '</span>' +
+                    '<span class="curso-link-label">Acessar \u2192</span></a>';
+                container.appendChild(card);
             });
+        })();
     </script>
 </body>
 </html>
